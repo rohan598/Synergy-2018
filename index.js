@@ -34,7 +34,7 @@ app.use(function (req, res, next) {
 //
 // app.use('/signin',signinRoutes);
 app.use(express.static('public'));
-// app.use('/', appRoutes);
+app.use('/', appRoutes);
 
 
 
