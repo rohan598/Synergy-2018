@@ -9,7 +9,7 @@ var appRoutes = require('./routes/app');
 // var geocoder = require('geocoder');
 var app = express();
 
-mongoose.connect("mongodb://localhost/nativityDB");
+mongoose.connect("mongodb://localhost/Synergy");
 mongoose.connection.once('open',()=>{
   console.log('connection estblished');
 }).on('error',error=>console.log(error));
