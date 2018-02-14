@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>FitnessFirst</title>
+	<link rel="icon" href="icon.ico" type="image/png">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+	<link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+	<!--<link rel="stylesheet" type="text/css" href="style.css">-->
+	<style>
+		button{
+			cursor: pointer;
+		}
+
+		/*============================NAVBAR============================*/
+		nav{
+		  padding: 5px !important;
+		  position: absolute;
+		  background-color: transparent;
+		}
+		.navbar-nav{
+		  flex-direction: column;
+		}
+		.mainMenu{
+		  list-style: none;
+		}
+		.mainMenu > li{
+		  font-family: 'Quicksand', sans-serif;
+		  border-bottom: 3px solid transparent;
+		  font-weight: bold;
+		  display: inline;
+		  margin-right: 20px;
+		}
+		.mainMenu > li:hover{
+		  border-bottom: 3px solid #44b2e2;
+		  transition: border-bottom 0.5s;
+		}
+
+		/*============================CONTACT US============================*/
+	    #contact{
+	        background-color: transparent;
+	    }
+	    .bottom1{
+	        width: 60%;
+	    }
+	    .bottom2{
+	        width: 40%;
+	    }
+	    .bottom1text, .copytext{
+	        font-family: 'Raleway', sans-serif;
+	        font-size: 0.5rem;
+	    }
+	    .bottom1head{
+	        font-family: 'Quicksand', sans-serif;
+	        font-size: 0.7rem;
+	    }
+	    .bottom2head, .bottom2text, {
+	        font-family: 'Quicksand', sans-serif;
+	        font-size: 0.8rem;
+	    }
+	    .bottom2text{
+	        width: 50%;
+	    }
+	    .footlinks{
+	        list-style: none;
+	        display: flex;
+	    }
+	    .footlinks > li{
+	        margin: auto;
+	        margin-right: 5px;
+	    }
+	    .fa-map-marker-alt{
+	        cursor: pointer;
+	        font-size: 0.8rem;
+	    }
+	    .fa-map-marker-alt:hover{
+	        color: red;
+	    }
+	    .ewacimg{
+	        height: 16px;
+	        width: 16px;
+	    }
+
+        @media only screen and (min-width: 420px){
+			.bottom1text, .copytext{
+	            font-size: 0.6rem;
+	        }
+	        .bottom1head{
+	            font-size: 0.9rem;
+	        }
+	        .bottom2head, .bottom2text, .fa-map-marker-alt{
+	            font-size: 0.9rem;
+	        }
+	        .copytext{
+	            margin-top: 1rem;
+	            padding-top: 1rem;
+	        }
+        }
+        @media only screen and (min-width: 768px){
+			.navbar-nav{
+	            flex-direction: row;
+	        }
+	        .mainMenu{
+	            float: right !important;
+	        }
+	        .mainMenu > li{
+	            font-size: 0.9rem;
+	        }
+			.bottom1text, .copytext{
+	            font-size: 0.80rem;
+	        }
+	        .bottom1head{
+	            font-size: 1.3rem;
+	        }
+	        .bottom2head, .bottom2text, .fa-map-marker-alt{
+	            font-size: 1.3rem;
+	        }
+	        .bottom2text{
+	            width: 40%;
+	        }
+        }
+        @media only screen and (min-width: 1020px){
+			.mainMenu > li{
+	            font-size: 1.1rem;
+	        }
+			.bottom1text, .copytext{
+	            font-size: 0.9rem;
+	        }
+	        .bottom1head{
+	            font-size: 1.6rem;
+	        }
+	        .bottom2head, .bottom2text, .fa-map-marker-alt{
+	            font-size: 1.6rem;
+	        }
+        }
+    </style>
+</head>
+<body>
+
+	<!--============================NAVBAR============================-->
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark" style="z-index: 1500">
+        <a class="navbar-brand" href="#" style="margin-left: 5px; padding: 0px;">
+            <img src="logo.png" class="img-fluid logo" alt="Responsive image">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="container-fluid">
+                <ul class="navbar-nav mainMenu float-left">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="scrollto('home')">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="scrollto('about')">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="scrollto('contact')">Contact</a>
+                    </li>
+					<li class="nav-item">
+                        <a class="nav-link" href="/signup" onclick="scrollto('about')">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signin" onclick="scrollto('contact')">Log In</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+	<!--============================CONTACT US============================-->
+	<div class="container-fluid mt-1 pt-5 pb-1" id="contact">
+		<div class="container-fluid d-flex">
+			<div class="container bottom1 m-auto">
+				<p class="card-text h3 bottom1head mb-3" style="color: gray;">Check out our other fitness programs</p>
+				<p class="h6 bottom1text mt-3" style="color: dimgray">The popular saying  “health is wealth” gives a large meaning to our life as
+					health is considered the most valuable and precious for every individual. Good health means not only a state of absence of disease
+					in the body but a complete physical, mental, social as well as spiritual well being of an individual.
+				</p>
+			</div>
+			<div class="container bottom2">
+				<div class="container-fluid text-center" style="padding: 0px">
+					<p class="card-text h3 bottom1head" style="color: gray; font-weight: bold; margin: 0 5px 10px 5px;">Contact Us</p>
+					<p style="margin: 10px 5px 10px 5px;"><a href="http://maps.google.com/maps?z=17&q=28.7500749,77.1154712" class="addresslink" target="_blank"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></a></p>
+					<div class="container-fluid">
+						<p class="card-text h3 bottom1text" style="color: dimgray;">
+							<span class="address">Shahbad Daulatpur, Main Bawana Road, Delhi Technological University, Shahbad Daulatpur Village, Rohini, Delhi, 110042</span>
+						</p>
+						<p class="card-text h3 bottom1text phone" style="color: dimgray;">Contact No. - 011 2787 1018</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container bottom2text mt-5" style="padding: 0px;">
+			<ul class="footlinks float-center" style="padding: 0px;">
+				<li>
+					<a href="" class="gitlink" target="_blank"><i class="fab fa-github" style="color: darkgray;" aria-hidden="true"></i></a>
+				</li>
+				<li>
+					<a href="" class="googlelink" target="_blank"><i class="fab fa-google-plus-g" style="color: red;" aria-hidden="true"></i></a>
+				</li>
+				<li>
+					<a href="" class="fblink" target="_blank"><i class="fab fa-facebook" style="color: #3b5998;" aria-hidden="true"></i></a>
+				</li>
+				<li>
+					<a href="" class="twitterlink" target="_blank"><i class="fab fa-twitter" style="color: #1da1f2;" aria-hidden="true"></i></a>
+				</li>
+				<li>
+					<a href="" class="lilink" target="_blank"><i class="fab fa-linkedin-in" style="color: darkblue;" aria-hidden="true"></i></a>
+				</li>
+				<li>
+					<a href="" class="instalink" target="_blank"><i class="fab fa-instagram" style="color: red;" aria-hidden="true"></i></a>
+				</li>
+			</ul>
+		</div>
+		<p class="backquote-footer text-right copytext pt-0" style="color: gray;">&copy; All copyrights reserved.</p>
+	</div>
+</div>
+
+    <script src="http://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="javascript.js"></script>
+</body>
+</html>
