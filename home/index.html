@@ -16,9 +16,9 @@
 
 		/*============================NAVBAR============================*/
 		nav{
+		  background-color: rgba(0,0,0,0.2);
 		  padding: 5px !important;
 		  position: absolute;
-		  background-color: transparent;
 		}
 		.navbar-nav{
 		  flex-direction: column;
@@ -36,6 +36,16 @@
 		.mainMenu > li:hover{
 		  border-bottom: 3px solid #44b2e2;
 		  transition: border-bottom 0.5s;
+		}
+
+		#carouselIndicators{
+			box-shadow: 0 0px 8px 5px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+		.caroimg{
+			height: inherit;
+		}
+		.caro {
+			height: 300px;
 		}
 
 		/*============================CONTACT US============================*/
@@ -84,6 +94,9 @@
 	    }
 
         @media only screen and (min-width: 420px){
+			.caro {
+				height: 400px;
+			}
 			.bottom1text, .copytext{
 	            font-size: 0.6rem;
 	        }
@@ -99,6 +112,9 @@
 	        }
         }
         @media only screen and (min-width: 768px){
+			.caro {
+				height: 500px;
+			}
 			.navbar-nav{
 	            flex-direction: row;
 	        }
@@ -122,6 +138,9 @@
 	        }
         }
         @media only screen and (min-width: 1020px){
+			.caro {
+				height: 600px;
+			}
 			.mainMenu > li{
 	            font-size: 1.1rem;
 	        }
@@ -160,15 +179,64 @@
                         <a class="nav-link" href="#" onclick="scrollto('contact')">Contact</a>
                     </li>
 					<li class="nav-item">
-                        <a class="nav-link" href="/signup" onclick="scrollto('about')">Sign Up</a>
+                        <a class="nav-link" href="/sign" onclick="scrollto('about')">Sign Up</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/signin" onclick="scrollto('contact')">Log In</a>
+                        <a class="nav-link" href="/login" onclick="scrollto('contact')">Log In</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+
+	<div class="container-fluid mt-5 pt-5 mb-5 pb-5" id="about">
+		<div id="carouselIndicators" class="carousel slide" data-ride="carousel" data-interval="3500">
+			<ol class="carousel-indicators">
+				<li data-target="#caroIndicators" data-slide-to="0" class="active"></li>
+				<li data-target="#caroIndicators" data-slide-to="1"></li>
+				<li data-target="#caroIndicators" data-slide-to="2"></li>
+				<li data-target="#caroIndicators" data-slide-to="3"></li>
+			</ol>
+			<div class="carousel-inner caro">
+				<div class="carousel-item active" style="height:inherit">
+					<img class="caroimg d-block w-100 img-fluid" src="one.png" alt="First slide">
+					<div class="carousel-caption d-none d-md-block text-dark">
+						<h2 style="font-weight: bold; font-family: 'Quicksand', sans-serif;">FTF</h2>
+						<p style="font-weight: bold; font-family: 'Raleway', sans-serif;">Living a FTF life!</p>
+					</div>
+				</div>
+				<div class="carousel-item" style="height:inherit">
+					<img class="caroimg d-block w-100 img-fluid" src="two.png" alt="Second slide">
+					<div class="carousel-caption d-none d-md-block text-dark">
+						<h2 style="font-weight: bold; font-family: 'Quicksand', sans-serif;">FITNESS</h2>
+						<p style="font-weight: bold; font-family: 'Raleway', sans-serif;">Hope to attain fitness!</p>
+					</div>
+				</div>
+				<div class="carousel-item" style="height:inherit">
+					<img class="caroimg d-block w-100 img-fluid" src="three.png" alt="Third slide">
+					<div class="carousel-caption d-none d-md-block text-dark">
+						<h2 style="font-weight: bold; font-family: 'Quicksand', sans-serif;">YOGA</h2>
+						<p style="font-weight: bold; font-family: 'Raleway', sans-serif;">Starting a perfect day!</p>
+					</div>
+				</div>
+				<div class="carousel-item" style="height:inherit">
+					<img class="caroimg d-block w-100 img-fluid" src="four.png" alt="Fourth slide">
+					<div class="carousel-caption d-none d-md-block text-dark">
+						<h2 style="font-weight: bold; font-family: 'Quicksand', sans-serif;">YOLO</h2>
+						<p style="font-weight: bold; font-family: 'Raleway', sans-serif;">You Only Live Once goals!</p>
+					</div>
+				</div>
+		  </div>
+			<a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			</a>
+			<a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			</a>
+		</div>
+	</div>
 
 	<!--============================CONTACT US============================-->
 	<div class="container-fluid mt-1 pt-5 pb-1" id="contact">

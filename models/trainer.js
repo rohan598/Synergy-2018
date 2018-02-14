@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 var TrainerSchema = new Schema({
     name:String,
-    users:[{type: Schema.Types.ObjectId,ref:'user'}],
+    users:[{type: Schema.Types.ObjectId}],
         email        : String,
         password     : String
     });

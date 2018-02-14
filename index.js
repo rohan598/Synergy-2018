@@ -1,7 +1,6 @@
 var express = require('express');
 var path = require('path');
 var request = require('request');
-// var router = express.Router();
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 // var favicon = require('serve-favicon');
@@ -12,10 +11,10 @@ var cookieParser = require('cookie-parser');
 // var passport = require("passport");
 // var flash = require("connect-flash");
 // var LocalStrategy = require("passport-local");
-var passportLocalMongoose = require("passport-local-mongoose");
+// var passportLocalMongoose = require("passport-local-mongoose");
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var appRoutes = require('./routes/app');
+// var appRoutes = require('./routes/app');
 // var geocoder = require('geocoder');
 var user = require('./models/user');
 var trainer = require('./models/trainer');
@@ -40,11 +39,10 @@ mongoose.connection.once('open',()=>{
 // }));
 // app.use(passport.initialize());
 // app.use(passport.session());
-
+//
 // passport.use(new LocalStrategy(User.authenticate()));
 // passport.serializeUser(User.serializeUser);
 // passport.deserializeUser(User.deserializeUser);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -74,6 +72,22 @@ app.get("/",function(req,res){
 //     res.send('hi there');
 // });
 
+
+// var UserSchema = mongoose.Schema({
+//     name:String,
+//     trainer:{type: Schema.Types.ObjectId},
+//         email        : String,
+//         password     : String
+//     });
+// var TrainerSchema = mongoose.Schema({
+//         name:String,
+//         users:[{type: Schema.Types.ObjectId}],
+//             email        : String,
+//             password     : String
+//         });
+//
+//         var user = mongoose.model('user',UserSchema);
+//         var trainer = mongoose.model('trainer',TrainerSchema);
 //////// create
 
 

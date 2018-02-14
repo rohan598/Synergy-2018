@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 var UserSchema = new Schema({
     name:String,
-    trainer:{type: Schema.Types.ObjectId,ref:'trainer'},
+    trainer:{type: Schema.Types.ObjectId},
         email        : String,
         password     : String
     });
