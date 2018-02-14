@@ -33,9 +33,10 @@ app.use(function (req, res, next) {
 });
 //
 // app.use('/signin',signinRoutes);
-app.use(express.static('public'));
+// app.use(express.static('public'));
 // app.use('/', appRoutes);
-
+app.use('/',express.static('home'));
+app.use('/sign',express.static('sign'));
 
 
 // catch 404 and forward to error handler
