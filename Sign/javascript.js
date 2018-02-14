@@ -8,8 +8,10 @@ $(document).ready(function(){
     $('#submitu').click(function(){
         var data = {
             'username' : $('#usern').val(),
+            'memId' : $('#usermi').val(),
             'email' : $('#usere').val(),
-            'password' : $('#userp').val()
+            'password' : $('#userp').val(),
+            'trainerId' : $('#usertr').val()
         };
         $.ajax({
             type : 'POST',
@@ -25,7 +27,8 @@ $(document).ready(function(){
         var data = {
             'username' : $('#trainern').val(),
             'email' : $('#trainere').val(),
-            'password' : $('#trainerp').val()
+            'password' : $('#trainerp').val(),
+            'trainId' : $('#trainerid').val()
         };
         $.ajax({
             type : 'POST',

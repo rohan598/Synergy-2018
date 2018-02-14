@@ -64,6 +64,8 @@ app.use('/',express.static('home'));
 app.use('/sign',express.static('Sign'));
 app.use('/login',express.static('login'));
 app.use('/chat',express.static('chat'));
+app.use('/login/user',express.static('user'));
+app.use('/login/trainer',express.static('trainer'));
 // app.use('',express.static('chat'));
 
 app.get("/",function(req,res){
