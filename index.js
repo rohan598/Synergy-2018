@@ -47,14 +47,14 @@ app.use(function (req, res, next) {
 // app.use(express.static('public'));
 // app.use('/', appRoutes);
 app.use('/',express.static('home'));
-app.use('/sign',express.static('sign'));
+app.use('/sign',express.static('Sign'));
 
 
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    return res.render('index');
-});
+// app.use(function (req, res, next) {
+//     return res.render('index');
+// });
 
 app.listen(process.env.PORT || 8080,process.env.IP,()=>{
   console.log('Server running on port 8080');
