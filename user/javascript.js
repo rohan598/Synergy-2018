@@ -7,7 +7,7 @@ let DATA={};
 $(document).ready(function(){
     window.scrollTo(0,0);
     $.ajax('/getuser',function(data){
-        DATA=data;
+        DATA=data.obj;
         setData();
     });
     $('#esend').click(function(){
@@ -29,8 +29,8 @@ $(document).ready(function(){
 });
 
 function setData() {
-    $('.uname').html(`${DATA.uname}`);
-    $('.uemail').val()=DATA.uemail;
+    $('.uname').html(`${DATA.name}`);
+    $('.uemail').val()=DATA.email;
     $('.tname').html(`${DATA.tname}`);
     $('.temail').val()=DATA.temail;
 }
