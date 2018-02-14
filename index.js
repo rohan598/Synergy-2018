@@ -1,18 +1,26 @@
 var express = require('express');
 var path = require('path');
+var request = require('request');
+var router = express.Router();
+var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
 // var favicon = require('serve-favicon');
 // var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 
 // var session = require("express-session");
-// var passport = require("passport");
+var passport = require("passport");
 // var flash = require("connect-flash");
-
+var LocalStrategy = require("passport-local");
+var passportLocalMongoose = require("passport-local-mongoose");
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var appRoutes = require('./routes/app');
 // var geocoder = require('geocoder');
+var user = require('user');
+var trainer = require('trainer');
 var app = express();
+
 
 mongoose.connect("mongodb://localhost/Synergy");
 mongoose.connection.once('open',()=>{
@@ -25,11 +33,18 @@ mongoose.connection.once('open',()=>{
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 // app.use(logger('dev'));
-// app.use(session({
-//     secret: "loda lassan",
-//     resave: false,
-//     saveUninitialized: false
-// }));
+app.use(session({
+    secret: "loda lassan",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser);
+passport.deserializeUser(User.deserializeUser);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -48,16 +63,168 @@ app.use(function (req, res, next) {
 // app.use('/', appRoutes);
 app.use('/',express.static('home'));
 app.use('/sign',express.static('Sign'));
+// app.use('',express.static('chat'));
+
+app.get("/",function(req,res){
+    res.render("home");
+});
+
+app.get("/secret",isLoggedIn,function(req,res){
+    res.send('hi there');
+});
+
+//////// create
+
+
+app.post("/user",function(req,res){
+
+  const newUser = new user({
+      name:req.body.username,
+      email:req.body.email,
+      password:bcrypt.hashSync(req.body.password,10)
+    });
+    newUser.save((error,result)=>{
+      if(error){
+        return res.status(500).json({
+          title: 'An error occured',
+          error: error
+        });
+      }else{
+        res.status(201).json({
+          message:'User successfully saved to db',
+          obj: result
+        });
+      }
+    });
+});
+
+app.post("/trainer",function(req,res){
+
+  const newTrainer = new trainer({
+      name:req.body.username,
+      email:req.body.email,
+      password:bcrypt.hashSync(req.body.password,10)
+    });
+    newTrainer.save((error,result)=>{
+      if(error){
+        return res.status(500).json({
+          title: 'An error occured',
+          error: error
+        });
+      }else{
+        res.status(201).json({
+          message:'User successfully saved to db',
+          obj: result
+        });
+      }
+    });
+});
+
+////////////
 
 
 
-// catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-//     return res.render('index');
+
+////////login
+
+router.post('/user', function (req, res, next) {
+
+    user.findOne({email: req.body.email},function(error,user){
+      if(error){
+        console.log('here');
+        return res.status(500).json({
+          title: 'An error occured',
+          error: error
+        });
+      }if(!user){
+              console.log('here1');
+        return res.status(401).json({
+          title: 'Login failed',
+          error:{message:'Invalid email'}
+        });
+      }
+        if(!bcrypt.compareSync(req.body.password,user.password)){
+                console.log('here2');
+          return res.status(401).json({
+            title: 'Login failed',
+            error:{message:'Invalid password'}
+        });
+      }
+            console.log('here3');
+      var token = new jwt.sign({user: user},'secret',{expiresIn:7200});
+      res.status(200).json({
+        message: 'successfully logged in',
+        token: token,
+        userId: user._id
+      });
+    });
+  });
+
+  router.post('/trainer', function (req, res, next) {
+
+      society.findOne({email: req.body.email},function(error,society){
+        if(error){
+          return res.status(500).json({
+            title: 'An error occured',
+            error: error
+          });
+        }if(!user){
+          return res.status(401).json({
+            title: 'Login failed',
+            error:{message:'Invalid email'}
+          });
+        }
+          if(!bcrypt.compareSync(req.body.password,society.password)){
+            return res.status(401).json({
+              title: 'Login failed',
+              error:{message:'Invalid password'}
+          });
+        }
+        var token = new jwt.sign({society: society},'secret2',{expiresIn:7200});
+        res.status(200).json({
+          message: 'successfully logged in',
+          token: token,
+          trainerId: trainer._id,
+        });
+      });
+    });
+
+///////////////////////////
+
+//
+// // Login Page
+//
+// app.get("/login",function(req,res){
+//     res.render("login");
 // });
+//
+// app.post("/login",passport.authenticate("local",{
+//     successRedirect: "/secret",
+//     failureRedirect: "/login"
+// }),function(req,res){ //As post request to check login credentials
+// });
+//
+// // Logout
+// app.get("/logout",function(req, res) {
+//     req.logout();
+//     res.redirect("/");
+// });
+//
+// //=========
+// //Middleware
+// //==========
+//
+// function isLoggedIn(req,res,next){
+//     if(req.isAuthenticated()){
+//         return next();
+//     }
+//     res.redirect("/login");
+// }
+//
+
 
 app.listen(process.env.PORT || 8080,process.env.IP,()=>{
-  console.log('Server running on port 8080');
+  console.log('server started');
 });
 
 // module.exports = app;
