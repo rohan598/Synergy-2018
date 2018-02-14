@@ -1,7 +1,6 @@
 var express = require('express');
 var path = require('path');
 var request = require('request');
-var router = express.Router();
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 // var favicon = require('serve-favicon');
@@ -11,16 +10,8 @@ var cookieParser = require('cookie-parser');
 // var session = require("express-session");
 // var passport = require("passport");
 // var flash = require("connect-flash");
-<<<<<<< HEAD
 // var LocalStrategy = require("passport-local");
 // var passportLocalMongoose = require("passport-local-mongoose");
-||||||| merged common ancestors
-var LocalStrategy = require("passport-local");
-var passportLocalMongoose = require("passport-local-mongoose");
-=======
-// var LocalStrategy = require("passport-local");
-var passportLocalMongoose = require("passport-local-mongoose");
->>>>>>> 3899b8b12c967d5f54c95a2ee7f26754fb1a78bb
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 // var appRoutes = require('./routes/app');
@@ -41,7 +32,6 @@ mongoose.connection.once('open',()=>{
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 // app.use(logger('dev'));
-<<<<<<< HEAD
 // app.use(session({
 //     secret: "loda lassan",
 //     resave: false,
@@ -53,33 +43,6 @@ mongoose.connection.once('open',()=>{
 // passport.use(new LocalStrategy(User.authenticate()));
 // passport.serializeUser(User.serializeUser);
 // passport.deserializeUser(User.deserializeUser);
-||||||| merged common ancestors
-app.use(session({
-    secret: "loda lassan",
-    resave: false,
-    saveUninitialized: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser);
-passport.deserializeUser(User.deserializeUser);
-
-=======
-// app.use(session({
-//     secret: "loda lassan",
-//     resave: false,
-//     saveUninitialized: false
-// }));
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// passport.use(new LocalStrategy(User.authenticate()));
-// passport.serializeUser(User.serializeUser);
-// passport.deserializeUser(User.deserializeUser);
-
->>>>>>> 3899b8b12c967d5f54c95a2ee7f26754fb1a78bb
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -146,7 +109,6 @@ app.post("/user",function(req,res){
           message:'User successfully saved to db',
           obj: result
         });
-        res.redirect('/user/home');
       }
     });
 });
@@ -169,7 +131,6 @@ app.post("/trainer",function(req,res){
           message:'User successfully saved to db',
           obj: result
         });
-        res.redirect('/trainer/home');
       }
     });
 });
@@ -181,7 +142,7 @@ app.post("/trainer",function(req,res){
 
 ////////login
 
-router.post('/login/user', function (req, res, next) {
+app.post('/login/user', function (req, res, next) {
 
     user.findOne({email: req.body.email},function(error,user){
       if(error){
@@ -214,7 +175,7 @@ router.post('/login/user', function (req, res, next) {
     });
   });
 
-  router.post('/login/trainer', function (req, res, next) {
+  app.post('/login/trainer', function (req, res, next) {
 
       society.findOne({email: req.body.email},function(error,society){
         if(error){
