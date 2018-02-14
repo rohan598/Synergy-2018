@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Fitness First</title>
-    <style>
+    <!-- <style>
     body{
   font-family: 'Nunito';
 }
@@ -73,14 +73,18 @@ button{
   border-radius: 0 0 2px 2px;
 }
 
-    </style>
+    </style> -->
         <meta charset="utf-8">
         <title>Fitness First</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script> -->
     </head>
     <body>
 
-        <div id="mario-chat">
+      <form action="/" enctype="multipart/form-data" method="post">
+        <input type="file" name="file-to-upload">
+        <input type="submit" value="Upload">
+      </form>  
+        <!-- <div id="mario-chat">
             <h2>Mario Chat</h2>
             <div id="chat-window">
                 <div id="output"></div>
@@ -93,5 +97,5 @@ button{
 
 
     </body>
-    <script src="./chat.js"></script>
+    <script src="./chat.js"></script> -->
 </html>

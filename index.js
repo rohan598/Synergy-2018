@@ -3,6 +3,7 @@ var path = require('path');
 var request = require('request');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
+var nodemailer = require('nodemailer');
 // var favicon = require('serve-favicon');
 // var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -64,14 +65,14 @@ app.use('/',express.static('home'));
 app.use('/sign',express.static('Sign'));
 app.use('/login',express.static('login'));
 app.use('/chat',express.static('chat'));
+app.use('/login/user',express.static('user'));
+app.use('/login/trainer',express.static('trainer'));
 // app.use('',express.static('chat'));
 
 app.get("/",function(req,res){
     res.render("home");
 });
 
-
-var express = require('express');
 var socket = require('socket.io');
 
 // App setup
@@ -80,30 +81,31 @@ var server = app.listen(8080, function(){
 });
 
 // Socket setup & pass server
-var io = socket(server);
-io.on('connection', (socket) => {
-
-    console.log('made socket connection', socket.id);
-
-    // Handle chat event
-    socket.on('chat', function(data){
-        // console.log(data);
-        io.sockets.emit('chat', data);
-    });
-
-    // Handle typing event
-    socket.on('typing', function(data){
-        socket.broadcast.emit('typing', data);
-    });
-
-});
-
-
-io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
-  });
-});
+// var io = socket(server);
+// io.on('connection', (socket) => {
+//
+//     console.log('made socket connection', socket.id);
+//
+//     // Handle chat event
+//     socket.on('chat', function(data){
+//         // console.log(data);
+//         io.sockets.emit('chat', data);
+//     });
+//
+//     // Handle typing event
+//     socket.on('typing', function(data){
+//         socket.broadcast.emit('typing', data);
+//     });
+//
+// });
+//
+//
+// io.on('connection', function(socket){
+//   socket.on('chat message', function(msg){
+//     io.emit('chat message', msg);
+//   });
+// });
+//
 
 //////// create
 
@@ -112,9 +114,10 @@ app.post("/user",function(req,res){
 
   const newUser = new user({
       name:req.body.username,
-      membId: rq.body.memId,
+      membId: req.body.memId,
       email:req.body.email,
-      password:bcrypt.hashSync(req.body.password,10)
+      password:bcrypt.hashSync(req.body.password,10),
+      trainer:req.body.trainerId
     });
     newUser.save((error,result)=>{
       if(error){
@@ -127,7 +130,32 @@ app.post("/user",function(req,res){
           message:'User successfully saved to db',
           obj: result
         });
-      }
+        trainer.findOne({trainerId: result.trainerId},function(error,trainer){
+            if(error){
+              console.log(error);
+            }else{
+              trainer.name = trainer.name;
+              trainer.trainerId = trainer.trainerId;
+              trainer.email =trainer.email;
+              trainer.password = trainer.password;
+              trainer.users.push(result.userId);
+              trainer.save((error,result)=>{
+                if(error){
+                  return res.status(500).json({
+                    title: 'An error occured',
+                    error: error
+                  });
+            }else{
+              res.status(201).json({
+                message:'User successfully updated',
+                obj: result
+              });
+            }
+          });
+            }
+        }
+      );
+    }
     });
 });
 
@@ -135,7 +163,7 @@ app.post("/trainer",function(req,res){
 
   const newTrainer = new trainer({
       name:req.body.trainername,
-      trainerId: rq.body.trainerId,
+      trainerId: req.body.trainerId,
       email:req.body.email,
       password:bcrypt.hashSync(req.body.password,10)
     });
@@ -189,7 +217,7 @@ app.post('/login/user', function (req, res, next) {
       res.status(200).json({
         message: 'successfully logged in',
         token: token,
-        userId: user._id
+        uId: user._id
       });
     });
   });
@@ -218,7 +246,7 @@ app.post('/login/user', function (req, res, next) {
         res.status(200).json({
           message: 'successfully logged in',
           token: token,
-          trainerId: trainer._id,
+          tId: trainer._id,
         });
       });
     });
@@ -235,11 +263,24 @@ app.put("/user/:id",function(req,res){
           res.redirect("/user");
       }
       else{
-        result.title = req.body.username || result.username;
+        result.name = req.body.username || result.username;
         result.memId = req.body.memId || result.memId;
         result.email = req.body.email || result.email;
         result.password = req.body.password || result.password;
         result.trainer = req.params.trainerId; // send trainerId
+        result.save((error,result)=>{
+          if(error){
+            return res.status(500).json({
+              title: 'An error occured',
+              error: error
+            });
+      }else{
+        res.status(201).json({
+          message:'User successfully updated',
+          obj: result
+        });
+      }
+    });
       }
     });
 });
@@ -252,17 +293,109 @@ app.put("/trainer/:id",function(req,res){
           res.redirect("/user");
       }
       else{
-        result.title = req.body.trainername || result.trainername;
+        result.name = req.body.trainername || result.trainername;
         result.trainerId = req.body.trainerId || result.trainerId;
         result.email = req.body.email || result.email;
         result.password = req.body.password || result.password;
         result.users.push(req.params.userId); // send userId
+        result.save((error,result)=>{
+          if(error){
+            return res.status(500).json({
+              title: 'An error occured',
+              error: error
+            });
+      }else{
+        res.status(201).json({
+          message:'Trainer successfully updated',
+          obj: result
+        });
       }
     });
+  }
+});
+});
+
+//////////////////////
+
+////// get if validated
+
+app.get('/user',function(req,res){
+    jwt.verify(req.query.token,'secret',function(err,decoded){
+      if(err){
+        return res.status(401).json({
+          title: 'Not Authenticated',
+          error: err
+        });
+      }
+      user.findById(uId,function(error,user){
+          if(error){
+            return res.status(500).json({
+              title: 'An error occured',
+              error: error
+            });
+          }else{
+                res.status(200).json({
+                message:'User successfully found in db',
+                obj: user
+              });
+            }
+        });
+    });
+  });
+
+
+////////////
+
+//////// mailing facility
+
+//// template
+var serverConfig  = {
+  gmail: {
+      client_user :  'fororderonly24@gmail.com',
+      clientId:"763448251226-6joontbt0trrjdtufao5c8lqbl3nu367.apps.googleusercontent.com",
+      clientSecret:"n0jexasMGvGtaOn3h9paoVSc",
+      refreshToken:'1/XwShalYxGZ_JlVXeZ22q66xw0ep6z_OyccOZQDsMhdm9gie7T_bmqi3fhY5fUzsr',
+      accessToken:'ya29.GltiBX5P7dRCy2n65P6zEZX00DSgakFwMugCLi4A_8M3M5E56Qu5SfHJkTxXilgdkuZswMilB_Rbp4763Qde7j6AULVRpsHxVEctexDoq674uuMl92A3QA69MJah',
+      expires: 3600
+  }
+};
+var transporter = nodemailer.createTransport({
+  service:'Gmail',
+   auth: {
+    type: 'OAuth2',
+    user: serverConfig.gmail.client_user,
+    clientId: serverConfig.gmail.client_id,
+    clientSecret: serverConfig.gmail.secret,
+    refreshToken: serverConfig.gmail.refresh_token,
+    accessToken: serverConfig.gmail.accessToken
+  }
+});
+
+/// send mail
+
+app.get('/mail',function(req,res){
+
+  const mailOptions = {
+    from: '${req.data.from}', // sender address
+    to: '${req.data.to}', // list of receivers
+    subject: '${req.data.subject}', // Subject line
+    text    : '${req.data.content}', // plaintext body
+    html    : `<p>${req.data.content}</p>`, // html body
+    attachDataUrls : true
+  };
+
+  transporter.sendMail(mailOptions, function (err, info) {
+     if(err)
+       console.log(err);
+     else
+       console.log(info);
+  });
 });
 
 
-//////////////////////
+
+///////////////////
+
 
 // var server = app.listen(process.env.PORT || 8080,process.env.IP,()=>{
 //   console.log('server started');
