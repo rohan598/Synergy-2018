@@ -9,16 +9,16 @@ var jwt = require('jsonwebtoken');
 var cookieParser = require('cookie-parser');
 
 // var session = require("express-session");
-var passport = require("passport");
+// var passport = require("passport");
 // var flash = require("connect-flash");
-var LocalStrategy = require("passport-local");
-var passportLocalMongoose = require("passport-local-mongoose");
+// var LocalStrategy = require("passport-local");
+// var passportLocalMongoose = require("passport-local-mongoose");
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var appRoutes = require('./routes/app');
+// var appRoutes = require('./routes/app');
 // var geocoder = require('geocoder');
-var user = require('user');
-var trainer = require('trainer');
+var user = require('./models/user');
+var trainer = require('./models/trainer');
 var app = express();
 
 
@@ -33,18 +33,17 @@ mongoose.connection.once('open',()=>{
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 // app.use(logger('dev'));
-app.use(session({
-    secret: "loda lassan",
-    resave: false,
-    saveUninitialized: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser);
-passport.deserializeUser(User.deserializeUser);
-
+// app.use(session({
+//     secret: "loda lassan",
+//     resave: false,
+//     saveUninitialized: false
+// }));
+// app.use(passport.initialize());
+// app.use(passport.session());
+//
+// passport.use(new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser);
+// passport.deserializeUser(User.deserializeUser);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
@@ -63,16 +62,33 @@ app.use(function (req, res, next) {
 // app.use('/', appRoutes);
 app.use('/',express.static('home'));
 app.use('/sign',express.static('Sign'));
+app.use('/login',express.static('login'));
 // app.use('',express.static('chat'));
 
 app.get("/",function(req,res){
     res.render("home");
 });
 
-app.get("/secret",isLoggedIn,function(req,res){
-    res.send('hi there');
-});
+// app.get("/secret",isLoggedIn,function(req,res){
+//     res.send('hi there');
+// });
 
+
+// var UserSchema = mongoose.Schema({
+//     name:String,
+//     trainer:{type: Schema.Types.ObjectId},
+//         email        : String,
+//         password     : String
+//     });
+// var TrainerSchema = mongoose.Schema({
+//         name:String,
+//         users:[{type: Schema.Types.ObjectId}],
+//             email        : String,
+//             password     : String
+//         });
+//
+//         var user = mongoose.model('user',UserSchema);
+//         var trainer = mongoose.model('trainer',TrainerSchema);
 //////// create
 
 
@@ -94,6 +110,7 @@ app.post("/user",function(req,res){
           message:'User successfully saved to db',
           obj: result
         });
+        res.redirect('/user/home');
       }
     });
 });
@@ -101,7 +118,7 @@ app.post("/user",function(req,res){
 app.post("/trainer",function(req,res){
 
   const newTrainer = new trainer({
-      name:req.body.username,
+      name:req.body.trainername,
       email:req.body.email,
       password:bcrypt.hashSync(req.body.password,10)
     });
@@ -116,6 +133,7 @@ app.post("/trainer",function(req,res){
           message:'User successfully saved to db',
           obj: result
         });
+        res.redirect('/trainer/home');
       }
     });
 });
@@ -127,7 +145,7 @@ app.post("/trainer",function(req,res){
 
 ////////login
 
-router.post('/user', function (req, res, next) {
+router.post('/login/user', function (req, res, next) {
 
     user.findOne({email: req.body.email},function(error,user){
       if(error){
@@ -160,7 +178,7 @@ router.post('/user', function (req, res, next) {
     });
   });
 
-  router.post('/trainer', function (req, res, next) {
+  router.post('/login/trainer', function (req, res, next) {
 
       society.findOne({email: req.body.email},function(error,society){
         if(error){
