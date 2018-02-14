@@ -1,7 +1,7 @@
 var express = require('express');
 var path = require('path');
 var request = require('request');
-var router = express.Router();
+// var router = express.Router();
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 // var favicon = require('serve-favicon');
@@ -128,7 +128,7 @@ app.post("/trainer",function(req,res){
 
 ////////login
 
-router.post('/login/user', function (req, res, next) {
+app.post('/login/user', function (req, res, next) {
 
     user.findOne({email: req.body.email},function(error,user){
       if(error){
@@ -161,7 +161,7 @@ router.post('/login/user', function (req, res, next) {
     });
   });
 
-  router.post('/login/trainer', function (req, res, next) {
+  app.post('/login/trainer', function (req, res, next) {
 
       society.findOne({email: req.body.email},function(error,society){
         if(error){
