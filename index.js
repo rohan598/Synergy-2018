@@ -44,7 +44,7 @@ app.use(function (req, res, next) {
 });
 
 app.listen(process.env.PORT || 8080,process.env.IP,()=>{
-  console.log('server started');
+  console.log('Server running on port 8080');
 });
 
 // module.exports = app;
