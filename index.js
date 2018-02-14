@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var request = require('request');
 // var favicon = require('serve-favicon');
 // var logger = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -12,7 +13,10 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var appRoutes = require('./routes/app');
 // var geocoder = require('geocoder');
+var user = require('user');
+var trainer = require('trainer');
 var app = express();
+
 
 mongoose.connect("mongodb://localhost/Synergy");
 mongoose.connection.once('open',()=>{
@@ -47,9 +51,18 @@ app.use(function (req, res, next) {
 // app.use(express.static('public'));
 // app.use('/', appRoutes);
 
+var options = {
+  url: '/sign'
+};
 
+function callback(error, response, body) {
+  if (!error && response.statusCode == 200) {
+    var info = JSON.parse(body);
+    U
+  }
+}
 
-
+request(options, callback);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     return res.render('index');
