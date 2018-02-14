@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
-var  bcrypt = require("bcryptjs");
-var trainer = require('trainer');
+var bcrypt = require("bcryptjs");
+var user = require('user');
 // define the schema for our user model
 
-var UserSchema = mongoose.Schema({
+var TrainerSchema = mongoose.Schema({
     name:String,
-    trainer:{type: Schema.Types.ObjectId,ref:'trainer'},
+    users:[{type: Schema.Types.ObjectId,ref:'user'}],
         email        : String,
         password     : String
     });
@@ -13,13 +13,13 @@ var UserSchema = mongoose.Schema({
 
 // methods ======================
 // generating a hash
-UserSchema.methods.generateHash = function(password) {
+TrainerSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 // checking if password is valid
-UserSchema.methods.validPassword = function(password) {
+TrainerSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.password);
 };
 
-module.exports = mongoose.model("user",UserSchema);
+module.exports = mongoose.model("trainer",TrainerSchema);
