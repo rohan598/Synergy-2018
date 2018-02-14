@@ -1,6 +1,9 @@
 $(document).ready(function(){
     console.log("hello");
+    $('.navbar').css('background-color', `rgba(0, 0, 0, 0.3 + ${$(document).scrollTop() / 800})`);
     $('#trainerlogin').css('display','none');
+    $('.selt').css('background-color','beige');
+    $('.selu').css('background-color','salmon');
 
     $('#submitu').click(function(){
         var data = {
@@ -37,8 +40,12 @@ $(document).ready(function(){
 function showt(){
     $('#userlogin').css('display','none');
     $('#trainerlogin').css('display','block');
+    $('.selt').css('background-color','salmon');
+    $('.selu').css('background-color','beige');
 }
 function showu(){
     $('#userlogin').css('display','block');
     $('#trainerlogin').css('display','none');
+    $('.selt').css('background-color','beige');
+    $('.selu').css('background-color','salmon');
 }

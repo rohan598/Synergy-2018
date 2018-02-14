@@ -15,9 +15,9 @@
 
 		/*============================NAVBAR============================*/
 		nav{
+		  background-color: rgba(0,0,0,0.3);
 		  padding: 5px !important;
 		  position: absolute;
-		  background-color: transparent;
 		}
 		.navbar-nav{
 		  flex-direction: column;
@@ -36,8 +36,21 @@
 		  border-bottom: 3px solid #44b2e2;
 		  transition: border-bottom 0.5s;
 		}
-        @media only screen and (min-width: 420px){
 
+		.sel{
+			font-family: 'Raleway', sans-serif;
+			font-size: 1.2rem;
+			cursor: pointer;
+			font-weight: bold;
+		}
+		label{
+			font-family: 'Quicksand', sans-serif;
+			font-weight: bold;
+		}
+        @media only screen and (min-width: 420px){
+			.sel{
+				font-size: 1.5rem;
+			}
         }
         @media only screen and (min-width: 768px){
 			.navbar-nav{
@@ -49,11 +62,17 @@
 	        .mainMenu > li{
 	            font-size: 0.9rem;
 	        }
+			.sel{
+				font-size: 1.8rem;
+			}
         }
         @media only screen and (min-width: 1020px){
 			.mainMenu > li{
 	            font-size: 1.1rem;
 	        }
+			.sel{
+				font-size: 2rem;
+			}
         }
     </style>
 </head>
@@ -71,15 +90,6 @@
             <div class="container-fluid">
                 <ul class="navbar-nav mainMenu float-left">
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="scrollto('home')">Overview</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="scrollto('about')">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="scrollto('contact')">Contact</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="/sign" onclick="scrollto('about')">Sign Up</a>
                     </li>
                     <li class="nav-item">
@@ -90,52 +100,52 @@
         </div>
     </nav>
 
-    <div class="container mt-5 mb-5 mb-3 pb-3">
-        <div class="container-fluid m-0 p-0 d-flex">
-            <div class="container-fluid text-center" style="width: 50%" onclick="showu()">
+    <div class="container mt-5 mb-5 pt-5 pb-5" id="sig">
+        <div class="container-fluid mt-5 pt-3 d-flex">
+            <div class="container-fluid text-center sel selu" style="width: 50%" onclick="showu()">
                 User
             </div>
-            <div class="container-fluid text-center" style="width: 50%" onclick="showt()">
+            <div class="container-fluid text-center sel selt" style="width: 50%" onclick="showt()">
                 Trainer
             </div>
         </div>
-        <div id="usersignup" class="container">
+        <div id="usersignup" class="container mt-4 pt-4 mb-3 pb-3">
             <div class="form-group row">
-                <label for="usern" class="col-sm-2 col-form-label">User Name</label>
-                <div class="col-sm-10">
+                <label for="usern" class="col-sm-4 col-form-label mb-2">User Name</label>
+                <div class="col-sm-8">
                   <input type="text" class="form-control" id="usern" placeholder="email@example.com">
                 </div>
-                <label for="useremail" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-10">
+                <label for="useremail" class="col-sm-4 col-form-label mb-2">Email</label>
+                <div class="col-sm-8">
                   <input type="text" class="form-control" id="usere" placeholder="email@example.com">
                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="userp" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
+                <label for="userp" class="col-sm-4 col-form-label mb-2">Password</label>
+                <div class="col-sm-8">
                   <input type="password" class="form-control" id="userp" placeholder="Password">
                 </div>
               </div>
-              <button type="button" id="submitu" class="btn btn-primary">Submit</button>
+			  <div class="container-fluid text-center">
+              <button type="button" id="submitu" style="border-radius: 5rem;" class="btn btn-danger">Sign Up</button>
+		  </div>
         </div>
-        <div id="trainersignup" class="container">
+        <div id="trainersignup" class="container mt-4 pt-4 mb-3 pb-3">
             <div class="form-group row">
-                <label for="trainern" class="col-sm-2 col-form-label">Trainer Name</label>
-                <div class="col-sm-10">
+                <label for="trainern" class="col-sm-4 col-form-label mb-2">Trainer Name</label>
+                <div class="col-sm-8">
                   <input type="text" class="form-control" id="trainern" placeholder="email@example.com">
                 </div>
-                <label for="trainere" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-10">
+                <label for="trainere" class="col-sm-4 col-form-label mb-2">Email</label>
+                <div class="col-sm-8">
                   <input type="text" class="form-control" id="trainere" placeholder="email@example.com">
                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="trainerp" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
+                <label for="trainerp" class="col-sm-4 col-form-label mb-2">Password</label>
+                <div class="col-sm-8">
                   <input type="password" class="form-control" id="trainerp" placeholder="Password">
                 </div>
               </div>
-              <button type="button" id="submitt" class="btn btn-primary">Submit</button>
+			  <div class="container-fluid text-center" style="border-radius: 5rem;">
+              <button type="button" id="submitt" style="border-radius: 5rem;" class="btn btn-danger">Sign Up</button>
+		  </div>
         </div>
     </div>
 
