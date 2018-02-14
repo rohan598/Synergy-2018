@@ -18,6 +18,7 @@ var mongoose = require('mongoose');
 // var geocoder = require('geocoder');
 var user = require('./models/user');
 var trainer = require('./models/trainer');
+var socket = require('socket.io');
 var app = express();
 
 
@@ -62,32 +63,48 @@ app.use(function (req, res, next) {
 app.use('/',express.static('home'));
 app.use('/sign',express.static('Sign'));
 app.use('/login',express.static('login'));
+app.use('/chat',express.static('chat'));
 // app.use('',express.static('chat'));
 
 app.get("/",function(req,res){
     res.render("home");
 });
 
-// app.get("/secret",isLoggedIn,function(req,res){
-//     res.send('hi there');
-// });
+
+var express = require('express');
+var socket = require('socket.io');
+
+// App setup
+var server = app.listen(8080, function(){
+    console.log('listening for requests on port 8080,');
+});
+
+// Socket setup & pass server
+var io = socket(server);
+io.on('connection', (socket) => {
+
+    console.log('made socket connection', socket.id);
+
+    // Handle chat event
+    socket.on('chat', function(data){
+        // console.log(data);
+        io.sockets.emit('chat', data);
+    });
+
+    // Handle typing event
+    socket.on('typing', function(data){
+        socket.broadcast.emit('typing', data);
+    });
+
+});
 
 
-// var UserSchema = mongoose.Schema({
-//     name:String,
-//     trainer:{type: Schema.Types.ObjectId},
-//         email        : String,
-//         password     : String
-//     });
-// var TrainerSchema = mongoose.Schema({
-//         name:String,
-//         users:[{type: Schema.Types.ObjectId}],
-//             email        : String,
-//             password     : String
-//         });
-//
-//         var user = mongoose.model('user',UserSchema);
-//         var trainer = mongoose.model('trainer',TrainerSchema);
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
+  });
+});
+
 //////// create
 
 
@@ -95,6 +112,7 @@ app.post("/user",function(req,res){
 
   const newUser = new user({
       name:req.body.username,
+      membId: rq.body.memId,
       email:req.body.email,
       password:bcrypt.hashSync(req.body.password,10)
     });
@@ -117,6 +135,7 @@ app.post("/trainer",function(req,res){
 
   const newTrainer = new trainer({
       name:req.body.trainername,
+      trainerId: rq.body.trainerId,
       email:req.body.email,
       password:bcrypt.hashSync(req.body.password,10)
     });
@@ -206,40 +225,47 @@ app.post('/login/user', function (req, res, next) {
 
 ///////////////////////////
 
-//
-// // Login Page
-//
-// app.get("/login",function(req,res){
-//     res.render("login");
-// });
-//
-// app.post("/login",passport.authenticate("local",{
-//     successRedirect: "/secret",
-//     failureRedirect: "/login"
-// }),function(req,res){ //As post request to check login credentials
-// });
-//
-// // Logout
-// app.get("/logout",function(req, res) {
-//     req.logout();
-//     res.redirect("/");
-// });
-//
-// //=========
-// //Middleware
-// //==========
-//
-// function isLoggedIn(req,res,next){
-//     if(req.isAuthenticated()){
-//         return next();
-//     }
-//     res.redirect("/login");
-// }
-//
+///////// edit
 
+app.put("/user/:id",function(req,res){
 
-app.listen(process.env.PORT || 8080,process.env.IP,()=>{
-  console.log('server started');
+    user.findById(req.params.userId,function(err,result){
+      if(err){
+          console.log('not updated');
+          res.redirect("/user");
+      }
+      else{
+        result.title = req.body.username || result.username;
+        result.memId = req.body.memId || result.memId;
+        result.email = req.body.email || result.email;
+        result.password = req.body.password || result.password;
+        result.trainer = req.params.trainerId; // send trainerId
+      }
+    });
 });
+
+app.put("/trainer/:id",function(req,res){
+
+    trainer.findById(req.params.trainerId,function(err,result){
+      if(err){
+          console.log('not updated');
+          res.redirect("/user");
+      }
+      else{
+        result.title = req.body.trainername || result.trainername;
+        result.trainerId = req.body.trainerId || result.trainerId;
+        result.email = req.body.email || result.email;
+        result.password = req.body.password || result.password;
+        result.users.push(req.params.userId); // send userId
+      }
+    });
+});
+
+
+//////////////////////
+
+// var server = app.listen(process.env.PORT || 8080,process.env.IP,()=>{
+//   console.log('server started');
+// });
 
 // module.exports = app;

@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 var UserSchema = new Schema({
     name:String,
-    trainer:{type: Schema.Types.ObjectId},
+    trainer:String,
+      membId: String,
         email        : String,
         password     : String
     });
