@@ -286,7 +286,7 @@ app.put("/trainer/:id",function(req,res){
 
 ////// get if validated
 
-app.get('/user',function(req,res){
+app.get('/getuser',function(req,res){
     jwt.verify(req.query.token,'secret',function(err,decoded){
       if(err){
         return res.status(401).json({
@@ -305,6 +305,21 @@ app.get('/user',function(req,res){
                 message:'User successfully found in db',
                 obj: user
               });
+              trainer.findOne({trainerId:user.trainer},function(error,result){
+                  if(error){
+                    return res.status(500).json({
+                      title: 'An error occured',
+                      error: error
+                    });
+                  }else{
+                        user['tname']=result.name;
+                        user['temail']=result.email;
+                        res.status(200).json({
+                        message:'User successfully found in db',
+                        obj: user
+                      });
+                    }
+                });
             }
         });
     });
