@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
-var user = require('user');
-// define the schema for our user model
 
-var TrainerSchema = mongoose.Schema({
+// define the schema for our user model
+const Schema = mongoose.Schema;
+var TrainerSchema = new Schema({
     name:String,
     users:[{type: Schema.Types.ObjectId,ref:'user'}],
         email        : String,
